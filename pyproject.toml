@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "altshot-discord-bot"
+version = "0.1.0"
+description = "Discord bot for Alt Shot Circuit"
+authors = ["kcmen"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+discord.py = "*"
+python-dotenv = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
