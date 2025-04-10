@@ -9,7 +9,6 @@ from discord.ext import commands
 # Load environment variables
 load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-GUILD_ID = discord.Object(id=1356460160239010026)  # AHGA Test Server
 
 # Setup intents
 intents = discord.Intents.default()
@@ -65,9 +64,8 @@ async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
     try:
-        bot.tree.copy_global_to(guild=GUILD_ID)
-        synced = await bot.tree.sync(guild=GUILD_ID)
-        print(f"🔁 Synced {len(synced)} command(s) to AHGA Test Server")
+        synced = await bot.tree.sync()
+        print(f"🔁 Synced {len(synced)} global command(s)")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
     except Exception as e:
