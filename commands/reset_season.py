@@ -1,10 +1,10 @@
 import os
 import shutil
 import sqlite3
-from datetime import datetime
 import discord
 from discord import app_commands
 from discord.ext import commands
+from datetime import datetime
 
 class ResetSeason(commands.Cog):
     def __init__(self, bot):
@@ -23,14 +23,15 @@ class ResetSeason(commands.Cog):
             # Step 2: Wipe relevant tables
             conn = sqlite3.connect("scores.db")
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM scores")
-            cursor.execute("DELETE FROM locks")
-            cursor.execute("DELETE FROM team_codes")
-            cursor.execute("DROP TABLE IF EXISTS playoff_scores")
-            cursor.execute("DROP TABLE IF EXISTS playoff_bracket")
+            cursor.execute("DELETE FROM scores")  # Clear the scores table
+            cursor.execute("DELETE FROM locks")   # Clear the locks table
+            cursor.execute("DELETE FROM team_codes")  # Clear the team_codes table
+            cursor.execute("DROP TABLE IF EXISTS playoff_scores")  # Drop playoff_scores table
+            cursor.execute("DROP TABLE IF EXISTS playoff_bracket")  # Drop playoff_bracket table
             conn.commit()
             conn.close()
 
+            # Step 3: Notify the user
             await interaction.response.send_message(
                 f"🧹 Season has been reset! Backup saved as `scores_backup_{timestamp}.db`.",
                 ephemeral=True
@@ -42,5 +43,6 @@ class ResetSeason(commands.Cog):
                 ephemeral=True
             )
 
+# 🔁 Cog loader
 async def setup(bot):
     await bot.add_cog(ResetSeason(bot))
