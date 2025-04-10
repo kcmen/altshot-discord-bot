@@ -1,3 +1,9 @@
 {
-    "git.ignoreLimitWarning": true
+  "auto-commit.enable": true,
+  "auto-commit.include": ["*"],
+  "auto-commit.exclude": ["**/node_modules/**", "**/.vscode/**"],
+  "auto-commit.message": "🚀 Auto commit via OBKoro1 - AltShot Bot",
+  "auto-commit.push": true,
+  "auto-commit.silent": false,
+  "auto-commit.branch": "main"
 }
