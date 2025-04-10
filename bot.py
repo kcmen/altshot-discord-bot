@@ -79,12 +79,10 @@ initial_extensions = [
     "commands.results_week",
     "commands.hole_diff",
     "commands.admin_tools",
-    "commands.reminders",
     "commands.schedule",
     "commands.leaderboard",
     "commands.weekly_matchups",
     "commands.team_codes",
-    "commands.weekly_reminder_tasks",
     "commands.post_playoff_bracket",
     "commands.report_playoff_score",
     "commands.view_playoff_score",
@@ -95,7 +93,6 @@ initial_extensions = [
     "commands.weekly_lock_task",
     "commands.weekly_post_matchups",
     "commands.weekly_results_task"
-
 ]
 
 async def load_extensions():
