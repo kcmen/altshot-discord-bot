@@ -114,6 +114,35 @@ class AdminTools(commands.Cog):
         )
         await interaction.response.send_message(msg, ephemeral=True)
 
+    # 📚 Start Season Guide Command
+    @app_commands.command(name="start_season_guide", description="Admin only: Post the season guide in the lcs-season-guide channel.")
+    @app_commands.checks.has_role("Admin")
+    async def start_season_guide(self, interaction: discord.Interaction):
+        channel = discord.utils.get(interaction.guild.text_channels, name="lcs-season-guide")
+        if channel:
+            # Message content for season guide
+            season_guide_message = """
+            **Welcome to the LCS Season Guide!** :trophy:
+
+            Here is a helpful guide to get you started with the season:
+            
+            1. **Team Assignments**: Confirm your team roles in the `#teams` channel.
+            2. **Match Schedule**: All match times and pairings will be posted in the `#match-schedule` channel.
+            3. **Score Submission**: Scores must be submitted by 7:59 PM EST every Sunday. Use `/score` to submit.
+            4. **Weekly Lock Deadline**: Matches will be locked at 8 PM EST, and no changes will be allowed after that time.
+            5. **Week-to-Week Flow**: Each week's schedule and results will be posted in the `#mod-event` channel.
+
+            Please ensure you're familiar with the information in the channels above.
+            
+            **Good luck and have fun!**
+            """
+            
+            # Send the guide message in the designated channel
+            await channel.send(season_guide_message)
+            await interaction.response.send_message("The season guide has been posted in the lcs-season-guide channel.", ephemeral=True)
+        else:
+            await interaction.response.send_message("The lcs-season-guide channel was not found. Please ensure the channel exists.", ephemeral=True)
+
 # 🔁 Cog loader
 async def setup(bot):
     await bot.add_cog(AdminTools(bot))

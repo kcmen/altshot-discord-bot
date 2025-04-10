@@ -90,7 +90,12 @@ initial_extensions = [
     "commands.view_playoff_score",
     "commands.delete_playoff_score",
     "commands.reset_playoffs",
-    "commands.advance_manually"
+    "commands.advance_manually",
+    "commands.reset_season",
+    "commands.weekly_lock_task",
+    "commands.weekly_post_matchups",
+    "commands.weekly_results_task"
+
 ]
 
 async def load_extensions():
