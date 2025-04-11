@@ -73,8 +73,8 @@ async def on_ready():
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
 
-        # 🏠 Guild-specific sync (force immediate command visibility)
-        TEST_GUILD_ID = 1256795396353560697  # ← your real server ID
+        # 🏠 Guild-specific sync (for fast visibility)
+        TEST_GUILD_ID = 1256795396353560697  # Your Discord server ID
         test_guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=test_guild)
         print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
@@ -115,15 +115,12 @@ async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
 
-# ✅ TEMPORARY DIAGNOSTIC COMMAND TO FORCE SYNC
-@bot.tree.command(name="force_sync", description="Force re-sync all slash commands (admin only)")
+# ✅ TEMP DIAGNOSTIC COMMAND — Now Available to Everyone
+@bot.tree.command(name="force_sync", description="Force re-sync all slash commands")
 async def force_sync(interaction: discord.Interaction):
-    if interaction.user.guild_permissions.administrator:
-        synced = await bot.tree.sync()
-        await interaction.response.send_message(
-            f"🔁 Resynced {len(synced)} commands. Try `/post_week_matchups` again!", ephemeral=True)
-    else:
-        await interaction.response.send_message("🚫 You must be an admin to run this.", ephemeral=True)
+    synced = await bot.tree.sync()
+    await interaction.response.send_message(
+        f"🔁 Resynced {len(synced)} commands. Try `/post_week_matchups` again!", ephemeral=True)
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
