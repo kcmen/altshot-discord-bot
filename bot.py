@@ -79,9 +79,7 @@ initial_extensions = [
     "commands.matchup",
     "commands.scores",
     "commands.standings",
-    "commands.results_week",
     "commands.hole_diff",
-    "commands.admin_tools",
     "commands.schedule",
     "commands.leaderboard",
     "commands.post_playoff_bracket",
@@ -106,6 +104,7 @@ async def load_extensions():
 
 @bot.event
 async def setup_hook():
+    await bot.load_extension("commands.admin_tools")
     await load_extensions()
 
 # ✅ RUN ONLY IF MAIN SCRIPT
