@@ -24,7 +24,7 @@ class WeeklyMatchupPoster(commands.Cog):
 
             channel = self.bot.get_channel(LOCK_CHANNEL_ID)
             if channel:
-                # Load team names and matchups
+                # Load team names and matchups*
                 try:
                     with open("teams.json", "r") as tf:
                         teams = json.load(tf)
@@ -34,9 +34,11 @@ class WeeklyMatchupPoster(commands.Cog):
 
                     lines = []
                     for team1, team2 in matchups:
-                        t1_names = " / ".join(teams.get(team1, {}).get("players", [team1]))
-                        t2_names = " / ".join(teams.get(team2, {}).get("players", [team2]))
-                        lines.append(f"{team1} 🆚 {team2}\n👥 {t1_names} vs {t2_names}")
+                        t1_data = teams.get(team1, {})
+                        t2_data = teams.get(team2, {})
+                        t1_players = " / ".join(t1_data.get("players", [team1]))
+                        t2_players = " / ".join(t2_data.get("players", [team2]))
+                        lines.append(f"{team1} 🆚 {team2}\n👥 {t1_players} vs {t2_players}")
 
                     message = (
                         f"### 💫 **LIVE NOW: Alt Shot Circuit – Week {current_week} Matchups** 💫\n\n"
