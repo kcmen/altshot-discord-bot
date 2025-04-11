@@ -114,7 +114,6 @@ class AdminTools(commands.Cog):
     async def start_season_guide(self, interaction: discord.Interaction):
         channel = discord.utils.get(interaction.guild.text_channels, name="lcs-season-guide")
         if channel:
-            # Message content for season guide
             season_guide_message = """
             **Welcome to the LCS Season Guide!** :trophy:
 
@@ -130,13 +129,11 @@ class AdminTools(commands.Cog):
             
             **Good luck and have fun!**
             """
-            
-            # Send the guide message in the designated channel
             await channel.send(season_guide_message)
             await interaction.response.send_message("The season guide has been posted in the lcs-season-guide channel.", ephemeral=True)
         else:
             await interaction.response.send_message("The lcs-season-guide channel was not found. Please ensure the channel exists.", ephemeral=True)
 
-# 🔁 Cog loader
+# ✅ Only load the cog via bot.load_extension in bot.py
 async def setup(bot):
     await bot.add_cog(AdminTools(bot))
