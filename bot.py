@@ -81,8 +81,6 @@ initial_extensions = [
     "commands.admin_tools",
     "commands.schedule",
     "commands.leaderboard",
-    "commands.weekly_matchups",
-    "commands.team_codes",
     "commands.post_playoff_bracket",
     "commands.report_playoff_score",
     "commands.view_playoff_score",
