@@ -2,6 +2,7 @@ import pytz
 from datetime import datetime
 import discord
 from discord.ext import commands, tasks
+from discord import app_commands
 import json
 
 LOCK_CHANNEL_ID = 1356054216728252506  # #matchup-schedule
