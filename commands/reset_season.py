@@ -1,17 +1,16 @@
 import discord
+import sqlite3
+import os
+import shutil
 from discord import app_commands
 from discord.ext import commands
-import sqlite3
-import shutil
-import os
 from datetime import datetime
 
 class ResetSeason(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="reset_season", description="Admin only: Archive and wipe all season data.")
-    @app_commands.checks.has_role("Admin")
+    @app_commands.command(name="reset_season", description="Archive and wipe all season data.")
     async def reset_season(self, interaction: discord.Interaction):
         try:
             # Step 1: Archive scores.db
@@ -25,7 +24,7 @@ class ResetSeason(commands.Cog):
             cursor = conn.cursor()
             cursor.execute("DELETE FROM scores")
             cursor.execute("DELETE FROM locks")
-            # Removed the line that deletes team_codes since the table is missing
+            cursor.execute("DELETE FROM team_codes")
             cursor.execute("DROP TABLE IF EXISTS playoff_scores")
             cursor.execute("DROP TABLE IF EXISTS playoff_bracket")
             conn.commit()
@@ -37,10 +36,6 @@ class ResetSeason(commands.Cog):
             )
 
         except Exception as e:
-            # If the interaction response was already sent, avoid sending another message
-            if interaction.response.is_done():
-                print(f"Interaction already responded, skipping further messages.")
-                return
             await interaction.response.send_message(
                 f"❌ Failed to reset season. Error: `{str(e)}`",
                 ephemeral=True
