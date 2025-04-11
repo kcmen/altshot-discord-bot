@@ -5,6 +5,8 @@ import csv
 from discord import app_commands
 from discord.ext import commands
 
+ARCHIVE_CHANNEL_ID = 1360327905774801177
+
 class AdminTools(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -82,7 +84,7 @@ class AdminTools(commands.Cog):
         except Exception as e:
             await interaction.response.send_message(f"❌ Failed to send reminders.\nError: `{str(e)}`", ephemeral=True)
 
-    # 🧾 Archive scores to CSV
+    # 🧾 Archive scores to CSV and post to #lcs-archives
     @app_commands.command(name="archive_scores", description="Export all scores to archive.csv")
     async def archive_scores(self, interaction: discord.Interaction):
         try:
@@ -95,7 +97,13 @@ class AdminTools(commands.Cog):
                 writer = csv.writer(f)
                 writer.writerow(["team", "week", "opponent", "result", "holes_won"])
                 writer.writerows(rows)
-            await interaction.response.send_message("🧾 All scores exported to `archive.csv`!", ephemeral=True)
+
+            archive_channel = interaction.guild.get_channel(ARCHIVE_CHANNEL_ID)
+            if archive_channel:
+                await archive_channel.send("📦 Season scores archive:", file=discord.File("archive.csv"))
+                await interaction.response.send_message("✅ Archive posted to #lcs-archives.", ephemeral=True)
+            else:
+                await interaction.response.send_message("❌ Archive channel not found.", ephemeral=True)
         except Exception as e:
             await interaction.response.send_message(f"❌ Failed to archive scores.\nError: `{str(e)}`", ephemeral=True)
 
