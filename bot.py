@@ -93,7 +93,6 @@ initial_extensions = [
     "commands.weekly_post_matchups",
     "commands.weekly_results_task",
     "commands.post_team_pairings"
-
 ]
 
 async def load_extensions():
@@ -108,6 +107,16 @@ async def load_extensions():
 async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
+
+# ✅ TEMPORARY DIAGNOSTIC COMMAND TO FORCE SYNC
+@bot.tree.command(name="force_sync", description="Force re-sync all slash commands (admin only)")
+async def force_sync(interaction: discord.Interaction):
+    if interaction.user.guild_permissions.administrator:
+        synced = await bot.tree.sync()
+        await interaction.response.send_message(
+            f"🔁 Resynced {len(synced)} commands. Try `/post_week_matchups` again!", ephemeral=True)
+    else:
+        await interaction.response.send_message("🚫 You must be an admin to run this.", ephemeral=True)
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
