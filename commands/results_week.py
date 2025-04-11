@@ -1,31 +1,41 @@
+import time
 import sqlite3
 import discord
-from discord import app_commands, Interaction
+from discord import app_commands
 from discord.ext import commands
 
-class ResultsWeek(commands.Cog):
+# Retry logic for database locked error
+def execute_query_with_retry(query, params=None, max_retries=3, retry_delay=2):
+    retries = 0
+    while retries < max_retries:
+        try:
+            conn = sqlite3.connect("scores.db", timeout=10)  # Set timeout for 10 seconds
+            cursor = conn.cursor()
+            cursor.execute(query, params or ())
+            conn.commit()
+            conn.close()
+            return True  # Success
+        except sqlite3.OperationalError as e:
+            if 'locked' in str(e).lower():
+                retries += 1
+                print(f"Database locked, retrying {retries}/{max_retries}...")
+                time.sleep(retry_delay)
+            else:
+                raise  # Raise other types of errors
+    return False  # Fail after retries
+
+class AdminTools(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="results_week", description="See all match results for a specific week")
-    @app_commands.describe(week="Week number to view results for")
-    async def results_week(self, interaction: Interaction, week: int):
-        try:
-            conn = sqlite3.connect("scores.db")
-            cursor = conn.cursor()
-            cursor.execute("SELECT team, result FROM scores WHERE week = ?", (week,))
-            results = cursor.fetchall()
-            conn.close()
-
-            if not results:
-                await interaction.response.send_message(f"\U0001F4ED No scores reported for Week {week}.")
-            else:
-                msg = f"\U0001F4CA **Results for Week {week}:**\n"
-                for team, result in results:
-                    msg += f"`{team}`: {result}\n"
-                await interaction.response.send_message(msg)
-        except Exception as e:
-            await interaction.response.send_message(f"❌ Error fetching results: {e}")
+    @app_commands.command(name="reset_week", description="Admin only: Delete all scores for a specific week.")
+    @app_commands.checks.has_role("Admin")
+    async def reset_week(self, interaction: discord.Interaction, week: int):
+        # Attempt to reset the scores with retry mechanism
+        if execute_query_with_retry("DELETE FROM scores WHERE week = ?", (week,)):
+            await interaction.response.send_message(f"🗑️ All scores for **Week {week}** have been cleared.", ephemeral=True)
+        else:
+            await interaction.response.send_message(f"❌ Failed to reset scores for Week {week}. Database was locked.", ephemeral=True)
 
 async def setup(bot):
-    await bot.add_cog(ResultsWeek(bot))
+    await bot.add_cog(AdminTools(bot))
