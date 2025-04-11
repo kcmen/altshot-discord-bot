@@ -21,9 +21,8 @@ class AdminTools(commands.Cog):
         await interaction.response.send_message(f"🔓 Week {week} is now unlocked.")
 
     # 🔐 Lock a week
-    @app_commands.command(name="lock_week", description="Admin only: Lock a specific week to prevent score changes.")
+    @app_commands.command(name="lock_week", description="Lock a specific week to prevent score changes.")
     @app_commands.describe(week="Week number to lock")
-    @app_commands.checks.has_role("Admin")
     async def lock_week(self, interaction: discord.Interaction, week: int):
         try:
             conn = sqlite3.connect("scores.db")
@@ -36,8 +35,7 @@ class AdminTools(commands.Cog):
             await interaction.response.send_message(f"❌ Failed to lock Week {week}.\nError: `{str(e)}`", ephemeral=True)
 
     # 🗑️ Reset week scores
-    @app_commands.command(name="reset_week", description="Admin only: Delete all scores for a specific week.")
-    @app_commands.checks.has_role("Admin")
+    @app_commands.command(name="reset_week", description="Delete all scores for a specific week.")
     async def reset_week(self, interaction: discord.Interaction, week: int):
         try:
             conn = sqlite3.connect("scores.db")
@@ -50,9 +48,8 @@ class AdminTools(commands.Cog):
             await interaction.response.send_message(f"❌ Failed to reset scores for Week {week}.\nError: `{str(e)}`", ephemeral=True)
 
     # 📬 Late reminder to all teams
-    @app_commands.command(name="late_reminder", description="Admin only: Remind all teams who haven’t submitted this week")
+    @app_commands.command(name="late_reminder", description="Remind all teams who haven’t submitted this week")
     @app_commands.describe(target="Use 'all' to ping all late teams.")
-    @app_commands.checks.has_role("Admin")
     async def late_reminder(self, interaction: discord.Interaction, target: str):
         if target != "all":
             await interaction.response.send_message("❌ Use `/late_reminder all` to ping all late teams.", ephemeral=True)
@@ -82,8 +79,7 @@ class AdminTools(commands.Cog):
             await interaction.response.send_message(f"❌ Failed to send reminders.\nError: `{str(e)}`", ephemeral=True)
 
     # 🧾 Archive scores to CSV
-    @app_commands.command(name="archive_scores", description="Admin only: Export all scores to archive.csv")
-    @app_commands.checks.has_role("Admin")
+    @app_commands.command(name="archive_scores", description="Export all scores to archive.csv")
     async def archive_scores(self, interaction: discord.Interaction):
         try:
             conn = sqlite3.connect("scores.db")
@@ -100,8 +96,7 @@ class AdminTools(commands.Cog):
             await interaction.response.send_message(f"❌ Failed to archive scores.\nError: `{str(e)}`", ephemeral=True)
 
     # 🛠️ Show admin help menu
-    @app_commands.command(name="admin_help", description="Admin only: View a list of admin commands and what they do")
-    @app_commands.checks.has_role("Admin")
+    @app_commands.command(name="admin_help", description="View a list of admin commands and what they do")
     async def admin_help(self, interaction: discord.Interaction):
         msg = (
             "**🛠️ Admin Commands Overview**\n"
@@ -115,8 +110,7 @@ class AdminTools(commands.Cog):
         await interaction.response.send_message(msg, ephemeral=True)
 
     # 📚 Start Season Guide Command
-    @app_commands.command(name="start_season_guide", description="Admin only: Post the season guide in the lcs-season-guide channel.")
-    @app_commands.checks.has_role("Admin")
+    @app_commands.command(name="start_season_guide", description="Post the season guide in the lcs-season-guide channel.")
     async def start_season_guide(self, interaction: discord.Interaction):
         channel = discord.utils.get(interaction.guild.text_channels, name="lcs-season-guide")
         if channel:
