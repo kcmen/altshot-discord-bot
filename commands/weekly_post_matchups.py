@@ -20,17 +20,14 @@ class WeeklyMatchupPoster(commands.Cog):
     async def auto_lock(self):
         now = datetime.now(EASTERN)
         if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
-            await self.post_week_matchups_auto()
+            current_week = self.bot.week_tracker.get_current_week()
+            await self.post_week(current_week)
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
     @app_commands.describe(week="Week number to post matchups for")
     async def post_week_matchups(self, interaction: discord.Interaction, week: int):
         await self.post_week(week)
         await interaction.response.send_message(f"📬 Week {week} matchups posted and locked.", ephemeral=True)
-
-    async def post_week_matchups_auto(self):
-        current_week = self.bot.week_tracker.get_current_week()
-        await self.post_week(current_week)
 
     async def post_week(self, week: int):
         self.bot.lock_week(week)
@@ -74,7 +71,5 @@ class WeeklyMatchupPoster(commands.Cog):
     async def before_auto_lock(self):
         await self.bot.wait_until_ready()
 
-# ✅ Clean setup — no duplicate command registration
 async def setup(bot):
-    cog = WeeklyMatchupPoster(bot)
-    await bot.add_cog(cog)
+    await bot.add_cog(WeeklyMatchupPoster(bot))
