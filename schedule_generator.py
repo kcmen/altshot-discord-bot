@@ -12,7 +12,8 @@ def load_teams():
 
 def create_teams(players):
     random.shuffle(players)
-    num_teams = len(players) // 2
+    if len(players) % 2 != 0:
+        raise ValueError("Player count is not even. Cannot create valid 2-person teams.")
     return [(players[i], players[i+1]) for i in range(0, len(players), 2)]
 
 def generate_round_robin(teams):
