@@ -17,8 +17,10 @@ def create_teams(players):
     return [(players[i], players[i+1]) for i in range(0, len(players), 2)]
 
 def generate_round_robin(teams):
+    print(f"🔍 Preparing round robin for {len(teams)} teams")
     if len(teams) % 2:
-        teams.append(("BYE", "BYE"))  # odd number of teams
+        print("➕ Adding BYE team due to odd number of teams")
+        teams.append(("BYE", "BYE"))
 
     num_rounds = len(teams) - 1
     schedule = []
