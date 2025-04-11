@@ -19,14 +19,19 @@ class ResetSeason(commands.Cog):
             os.makedirs(archive_dir, exist_ok=True)
             shutil.copy("scores.db", f"{archive_dir}/scores_backup_{timestamp}.db")
 
-            # Step 2: Wipe relevant tables
+            # Step 2: Wipe or drop tables
             conn = sqlite3.connect("scores.db")
             cursor = conn.cursor()
+
+            # Delete rows from known tables
             cursor.execute("DELETE FROM scores")
             cursor.execute("DELETE FROM locks")
-            cursor.execute("DELETE FROM team_codes")
+
+            # Drop tables that may or may not exist
+            cursor.execute("DROP TABLE IF EXISTS team_codes")
             cursor.execute("DROP TABLE IF EXISTS playoff_scores")
             cursor.execute("DROP TABLE IF EXISTS playoff_bracket")
+
             conn.commit()
             conn.close()
 
