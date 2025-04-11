@@ -1,142 +1,37 @@
 {
-  "Team 1": {
-      "players": [
-          "Wompz",
-          "Bubbly"
-      ],
-      "id": "team_1"
-  },
-  "Team 2": {
-      "players": [
-          "Stikky",
-          "Oxi"
-      ],
-      "id": "team_2"
-  },
-  "Team 3": {
-      "players": [
-          "Smoketree",
-          "Sponge"
-      ],
-      "id": "team_3"
-  },
-  "Team 4": {
-      "players": [
-          "Wheelman1",
-          "Bangnhanggaming"
-      ],
-      "id": "team_4"
-  },
-  "Team 5": {
-      "players": [
-          "Coders",
-          "Pretty"
-      ],
-      "id": "team_5"
-  },
-  "Team 6": {
-      "players": [
-          "Pierce",
-          "Kalby_9"
-      ],
-      "id": "team_6"
-  },
-  "Team 7": {
-      "players": [
-          "Slawdawg",
-          "Ares Prime"
-      ],
-      "id": "team_7"
-  },
-  "Team 8": {
-      "players": [
-          "Weebanger",
-          "WhoIsJaydos"
-      ],
-      "id": "team_8"
-  },
-  "Team 9": {
-      "players": [
-          "Dudechef",
-          "Ares 2.0"
-      ],
-      "id": "team_9"
-  },
-  "Team 10": {
-      "players": [
-          "FakePlayer5",
-          "Ljackson8"
-      ],
-      "id": "team_10"
-  },
-  "Team 11": {
-      "players": [
-          "FakePlayer1",
-          "Drp2309"
-      ],
-      "id": "team_11"
-  },
-  "Team 12": {
-      "players": [
-          "Daddyjules10",
-          "MichiganMaan"
-      ],
-      "id": "team_12"
-  },
-  "Team 13": {
-      "players": [
-          "DaddyQuase",
-          "FakePlayer2"
-      ],
-      "id": "team_13"
-  },
-  "Team 14": {
-      "players": [
-          "MaestroManiac93",
-          "Ads316"
-      ],
-      "id": "team_14"
-  },
-  "Team 15": {
-      "players": [
-          "Lazer",
-          "ItzTownsend"
-      ],
-      "id": "team_15"
-  },
-  "Team 16": {
-      "players": [
-          "Hunker",
-          "Coach"
-      ],
-      "id": "team_16"
-  },
-  "Team 17": {
-      "players": [
-          "FakePlayer3",
-          "FakePlayer4"
-      ],
-      "id": "team_17"
-  },
-  "Team 18": {
-      "players": [
-          "Tyrantula",
-          "Orangeman"
-      ],
-      "id": "team_18"
-  },
-  "Team 19": {
-      "players": [
-          "Cowboyhippie",
-          "TherealJtobin"
-      ],
-      "id": "team_19"
-  },
-  "Team 20": {
-      "players": [
-          "Exposed",
-          "AntzBundy"
-      ],
-      "id": "team_20"
+    "Bubbly": "621576960845545495",
+    "Stikky": "513413846623453237",
+    "Oxi": "261027064402935810",
+    "Smoketree": "1143030570641789008",
+    "Sponge": "960718635536613466",
+    "Wheelman1": "1206285043841105962",
+    "Bangnhanggaming": "555003873228488704",
+    "Coders": "457766557372645386",
+    "Pretty": "143932132379721729",
+    "Pierce": "1175287011893071984",
+    "Kalby_9": "1357061718592983043",
+    "Slawdawg": "1022154672787697795",
+    "Ares Prime": "684918740345028638",
+    "Weebanger": "637761568385531934",
+    "WhoIsJaydos": "432896799603163136",
+    "Dudechef": "588905892469014539",
+    "Ares 2.0": "903021817839616051",
+    "Ljackson8": "611634520034115584",
+    "Drp2309": "262382244713332738",
+    "Daddyjules10": "643904477891657729",
+    "MichiganMaan": "1353489770457600070",
+    "DaddyQuase": "909993367763578890",
+    "MaestroManiac93": "572183591526858776",
+    "Ads316": "666721668550492180",
+    "Lazer": "623373634240512003",
+    "ItzTownsend": "1292225173344354405",
+    "Hunker": "1345822059061575792",
+    "Coach": "319573965234241538",
+    "Tyrantula": "1269041480551628983",
+    "Orangeman": "485174005104640011",
+    "Cowboyhippie": "848674031140995082",
+    "TherealJtobin": "1256420368428564500",
+    "Exposed": "303739790908588032",
+    "AntzBundy": "1157263008469352528"
   }
-}
+  
