@@ -13,12 +13,15 @@ class AdminTools(commands.Cog):
     @app_commands.command(name="unlock_week", description="Unlock a specific week to allow score updates")
     @app_commands.describe(week="Week number to unlock")
     async def unlock_week(self, interaction: discord.Interaction, week: int):
-        conn = sqlite3.connect("scores.db")
-        cursor = conn.cursor()
-        cursor.execute("UPDATE locks SET locked = 0 WHERE week = ?", (week,))
-        conn.commit()
-        conn.close()
-        await interaction.response.send_message(f"🔓 Week {week} is now unlocked.")
+        try:
+            conn = sqlite3.connect("scores.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE locks SET locked = 0 WHERE week = ?", (week,))
+            conn.commit()
+            conn.close()
+            await interaction.response.send_message(f"🔓 Week {week} is now unlocked.", ephemeral=True)
+        except Exception as e:
+            await interaction.response.send_message(f"❌ Failed to unlock Week {week}.\nError: `{str(e)}`", ephemeral=True)
 
     # 🔐 Lock a week
     @app_commands.command(name="lock_week", description="Lock a specific week to prevent score changes.")
@@ -30,12 +33,13 @@ class AdminTools(commands.Cog):
             cursor.execute("INSERT INTO locks (week, locked) VALUES (?, 1) ON CONFLICT(week) DO UPDATE SET locked = 1", (week,))
             conn.commit()
             conn.close()
-            await interaction.response.send_message(f"🔒 Week {week} is now locked.", ephemeral=True)
+            await interaction.response.send_message(f"🔐 Week {week} is now locked.", ephemeral=True)
         except Exception as e:
             await interaction.response.send_message(f"❌ Failed to lock Week {week}.\nError: `{str(e)}`", ephemeral=True)
 
     # 🗑️ Reset week scores
     @app_commands.command(name="reset_week", description="Delete all scores for a specific week.")
+    @app_commands.describe(week="Week number to reset")
     async def reset_week(self, interaction: discord.Interaction, week: int):
         try:
             conn = sqlite3.connect("scores.db")
