@@ -23,13 +23,13 @@ class WeeklyMatchupPoster(commands.Cog):
             await self.post_week_matchups()
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
-    async def post_week_matchups(self, interaction: discord.Interaction):
-        await self.post_week_matchups()
-        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
+    @app_commands.describe(week="Week number to post matchups for")
+    async def post_week_matchups(self, interaction: discord.Interaction, week: int):
+        await self.post_week(week)
+        await interaction.response.send_message(f"📬 Week {week} matchups posted and locked.", ephemeral=True)
 
-    async def post_week_matchups(self):
-        current_week = self.bot.week_tracker.get_current_week()
-        self.bot.lock_week(current_week)
+    async def post_week(self, week: int):
+        self.bot.lock_week(week)
 
         channel = self.bot.get_channel(LOCK_CHANNEL_ID)
         if channel:
@@ -38,7 +38,7 @@ class WeeklyMatchupPoster(commands.Cog):
                     teams = json.load(tf)
                 with open("schedule.json", "r") as sf:
                     schedule = json.load(sf)
-                matchups = schedule.get(str(current_week), [])
+                matchups = schedule.get(str(week), [])
 
                 lines = []
                 for team1, team2 in matchups:
@@ -49,7 +49,7 @@ class WeeklyMatchupPoster(commands.Cog):
                     lines.append(f"{team1} 🆚 {team2}\n👥 {t1_players} vs {t2_players}")
 
                 message = (
-                    f"### 💫 **LIVE NOW: Alt Shot Circuit – Week {current_week} Matchups** 💫\n\n"
+                    f"### 💫 **LIVE NOW: Alt Shot Circuit – Week {week} Matchups** 💫\n\n"
                     f"🎯 **Rally your duo and lock in!**\nIt’s time to swing big, putt smooth, and play like champs.\n\n"
                     + "\n".join(lines) + "\n\n"
                     "📅 **Match Deadline:** Sunday @ 6:59 PM EST\n"
@@ -61,7 +61,7 @@ class WeeklyMatchupPoster(commands.Cog):
                 await channel.send(f"⚠️ Failed to load matchups: {e}")
 
             await channel.send(
-                f"🔒 **Week {current_week} has been automatically locked!**  \n"
+                f"🔒 **Week {week} has been automatically locked!**  \n"
                 f"📅 Deadline has passed — 🛑 No further score submissions or edits are allowed  \n"
                 f"✅ Only admins may approve changes under special circumstances."
             )
@@ -70,5 +70,8 @@ class WeeklyMatchupPoster(commands.Cog):
     async def before_auto_lock(self):
         await self.bot.wait_until_ready()
 
+# ✅ Properly register the slash command
 async def setup(bot):
-    await bot.add_cog(WeeklyMatchupPoster(bot))
+    cog = WeeklyMatchupPoster(bot)
+    await bot.add_cog(cog)
+    bot.tree.add_command(cog.post_week_matchups)
