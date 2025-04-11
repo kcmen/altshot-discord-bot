@@ -7,7 +7,7 @@ import json
 LOCK_CHANNEL_ID = 1356054216728252506  # #matchup-schedule
 EASTERN = pytz.timezone("US/Eastern")
 
-class WeeklyLocker(commands.Cog):
+class WeeklyMatchupPoster(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.auto_lock.start()
@@ -61,4 +61,4 @@ class WeeklyLocker(commands.Cog):
         await self.bot.wait_until_ready()
 
 async def setup(bot):
-    await bot.add_cog(WeeklyLocker(bot))
+    await bot.add_cog(WeeklyMatchupPoster(bot))
