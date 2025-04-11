@@ -43,7 +43,10 @@ def is_week_locked(week):
 def lock_week(week):
     conn = sqlite3.connect("scores.db")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO locks (week, locked) VALUES (?, 1) ON CONFLICT(week) DO UPDATE SET locked = 1", (week,))
+    cursor.execute(
+        "INSERT INTO locks (week, locked) VALUES (?, 1) "
+        "ON CONFLICT(week) DO UPDATE SET locked = 1", (week,)
+    )
     conn.commit()
     conn.close()
 
