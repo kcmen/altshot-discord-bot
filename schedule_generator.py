@@ -45,6 +45,7 @@ def save_schedule(schedule):
 
 if __name__ == "__main__":
     players = load_teams()
+    print(f"🔍 Loaded {len(players)} players: {players}")
     teams = create_teams(players)
     schedule = generate_round_robin(teams)
     save_schedule(schedule)
