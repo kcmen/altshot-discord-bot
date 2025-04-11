@@ -67,10 +67,17 @@ async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
     try:
+        # 🌐 Global sync
         synced = await bot.tree.sync()
-        print(f"🔁 Synced {len(synced)} global command(s)")
+        print(f"🌐 Synced {len(synced)} global command(s)")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
+
+        # 🏠 Guild-specific sync (force immediate command visibility)
+        TEST_GUILD_ID = 1256795396353560697  # ← your real server ID
+        test_guild = discord.Object(id=TEST_GUILD_ID)
+        guild_synced = await bot.tree.sync(guild=test_guild)
+        print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
     except Exception as e:
         print(f"❌ Failed to sync commands: {e}")
 
