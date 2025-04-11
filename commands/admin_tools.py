@@ -105,7 +105,8 @@ class AdminTools(commands.Cog):
             "`/unlock_week` — Allow score edits for a week\n"
             "`/late_reminder all` — DM all late teams\n"
             "`/archive_scores` — Export scores to CSV\n"
-            "`/admin_help` — Show this menu"
+            "`/admin_help` — Show this menu\n"
+            "`/start_season_guide` — Post the season guide to the designated channel"
         )
         await interaction.response.send_message(msg, ephemeral=True)
 
