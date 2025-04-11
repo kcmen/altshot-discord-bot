@@ -1,9 +1,9 @@
-import os
-import shutil
-import sqlite3
 import discord
 from discord import app_commands
 from discord.ext import commands
+import sqlite3
+import shutil
+import os
 from datetime import datetime
 
 class ResetSeason(commands.Cog):
@@ -23,26 +23,28 @@ class ResetSeason(commands.Cog):
             # Step 2: Wipe relevant tables
             conn = sqlite3.connect("scores.db")
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM scores")  # Clear the scores table
-            cursor.execute("DELETE FROM locks")   # Clear the locks table
-            cursor.execute("DELETE FROM team_codes")  # Clear the team_codes table
-            cursor.execute("DROP TABLE IF EXISTS playoff_scores")  # Drop playoff_scores table
-            cursor.execute("DROP TABLE IF EXISTS playoff_bracket")  # Drop playoff_bracket table
+            cursor.execute("DELETE FROM scores")
+            cursor.execute("DELETE FROM locks")
+            # Removed the line that deletes team_codes since the table is missing
+            cursor.execute("DROP TABLE IF EXISTS playoff_scores")
+            cursor.execute("DROP TABLE IF EXISTS playoff_bracket")
             conn.commit()
             conn.close()
 
-            # Step 3: Notify the user
             await interaction.response.send_message(
                 f"🧹 Season has been reset! Backup saved as `scores_backup_{timestamp}.db`.",
                 ephemeral=True
             )
 
         except Exception as e:
+            # If the interaction response was already sent, avoid sending another message
+            if interaction.response.is_done():
+                print(f"Interaction already responded, skipping further messages.")
+                return
             await interaction.response.send_message(
                 f"❌ Failed to reset season. Error: `{str(e)}`",
                 ephemeral=True
             )
 
-# 🔁 Cog loader
 async def setup(bot):
     await bot.add_cog(ResetSeason(bot))
