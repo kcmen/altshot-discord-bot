@@ -21,15 +21,15 @@ class WeeklyMatchupPoster(commands.Cog):
         now = datetime.now(EASTERN)
         if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
             current_week = self.bot.week_tracker.get_current_week()
-            await self.post_week(current_week)
+            await self.post_week_logic(current_week)
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
     @app_commands.describe(week="Week number to post matchups for")
     async def post_week_matchups(self, interaction: discord.Interaction, week: int):
-        await self.post_week(week)
-        await interaction.response.send_message(f"📬 Week {week} matchups posted and locked.", ephemeral=True)
+        await self.post_week_logic(week)
+        await interaction.response.send_message(f"📬 Week {week} matchups posted and week locked manually.", ephemeral=True)
 
-    async def post_week(self, week: int):
+    async def post_week_logic(self, week: int):
         self.bot.lock_week(week)
 
         channel = self.bot.get_channel(LOCK_CHANNEL_ID)
