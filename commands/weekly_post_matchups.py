@@ -20,27 +20,18 @@ class WeeklyMatchupPoster(commands.Cog):
     async def auto_lock(self):
         now = datetime.now(EASTERN)
         if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
-            await self._post_week_matchups_internal()
+            await self.post_week_matchups()
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
     async def post_week_matchups(self, interaction: discord.Interaction):
-        await self._post_week_matchups_internal()
-        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
-
-    async def _post_week_matchups_internal(self):
         current_week = self.bot.week_tracker.get_current_week()
         self.bot.lock_week(current_week)
 
         channel = self.bot.get_channel(LOCK_CHANNEL_ID)
         if channel:
             try:
-                try:
-                    with open("teams.json", "r") as tf:
-                        teams = json.load(tf)
-                except Exception as e:
-                    print(f"❌ Failed to load teams.json: {e}")
-                    teams = {}
-
+                with open("teams.json", "r") as tf:
+                    teams = json.load(tf)
                 with open("schedule.json", "r") as sf:
                     schedule = json.load(sf)
                 matchups = schedule.get(str(current_week), [])
@@ -70,6 +61,8 @@ class WeeklyMatchupPoster(commands.Cog):
                 f"📅 Deadline has passed — 🛑 No further score submissions or edits are allowed  \n"
                 f"✅ Only admins may approve changes under special circumstances."
             )
+
+        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
 
     @auto_lock.before_loop
     async def before_auto_lock(self):
