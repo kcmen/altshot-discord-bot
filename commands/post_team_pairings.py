@@ -1,17 +1,18 @@
+import os
 import json
 import discord
 from discord.ext import commands
 from discord import app_commands
 
 PAIRINGS_CHANNEL_ID = 1356650434340720690  # #team-pairings
+PAIRINGS_FLAG_FILE = "pairings_posted.flag"
 
 class PostTeamPairings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.has_posted_pairings = False  # Prevent reposting every restart
 
     async def post_team_pairings(self):
-        if self.has_posted_pairings:
+        if os.path.exists(PAIRINGS_FLAG_FILE):
             return
 
         try:
@@ -27,7 +28,8 @@ class PostTeamPairings(commands.Cog):
             channel = self.bot.get_channel(PAIRINGS_CHANNEL_ID)
             if channel:
                 await channel.send(message)
-                self.has_posted_pairings = True
+                with open(PAIRINGS_FLAG_FILE, "w") as flag:
+                    flag.write("posted")
                 print("✅ Team pairings posted.")
 
         except Exception as e:
@@ -47,3 +49,4 @@ class PostTeamPairings(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(PostTeamPairings(bot))
+
