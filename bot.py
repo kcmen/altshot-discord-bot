@@ -66,6 +66,7 @@ bot.unlock_week = unlock_week
 async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
+
     try:
         # 🌐 Global sync
         synced = await bot.tree.sync()
@@ -73,13 +74,17 @@ async def on_ready():
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
 
-        # 🏠 Guild-specific sync (for fast visibility)
-        TEST_GUILD_ID = 1256795396353560697  # Your Discord server ID
-        test_guild = discord.Object(id=TEST_GUILD_ID)
-        guild_synced = await bot.tree.sync(guild=test_guild)
+        # 🏠 Force guild-only sync (register slash command explicitly)
+        TEST_GUILD_ID = 1256795396353560697
+        guild = discord.Object(id=TEST_GUILD_ID)
+        guild_synced = await bot.tree.sync(guild=guild)
         print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
+        for cmd in guild_synced:
+            print(f"   └─ /{cmd.name} (guild only)")
+
     except Exception as e:
         print(f"❌ Failed to sync commands: {e}")
+
 
 # Load all command modules
 initial_extensions = [
