@@ -2,6 +2,9 @@ print("\U0001F680 bot.py starting up...")
 
 import os
 import sqlite3
+import json
+import random
+from itertools import combinations
 from dotenv import load_dotenv
 import discord
 from discord.ext import commands
@@ -57,7 +60,47 @@ def unlock_week(week):
     conn.commit()
     conn.close()
 
-# Make lock helpers globally available*
+# Auto-generate schedule.json if missing
+def auto_generate_schedule():
+    if not os.path.exists("teams.json"):
+        print("⚠️ teams.json not found. Skipping schedule generation.")
+        return
+    if os.path.exists("schedule.json"):
+        print("✅ schedule.json already exists. Skipping generation.")
+        return
+
+    with open("teams.json", "r") as f:
+        data = json.load(f)
+    teams = list(data.keys())
+    print(f"📋 Generating schedule for {len(teams)} teams: {teams}")
+
+    total_matchups = list(combinations(teams, 2))
+    random.shuffle(total_matchups)
+
+    schedule = [[] for _ in range(8)]
+    team_usage = {team: 0 for team in teams}
+
+    for team1, team2 in total_matchups:
+        for week in schedule:
+            scheduled_teams = [t for match in week for t in match]
+            if team1 not in scheduled_teams and team2 not in scheduled_teams:
+                week.append((team1, team2))
+                team_usage[team1] += 1
+                team_usage[team2] += 1
+                break
+        if all(count >= 8 for count in team_usage.values()):
+            break
+
+    full_schedule = {}
+    for i, week in enumerate(schedule):
+        full_schedule[f"Week {i+1}"] = [[t1, t2] for t1, t2 in week]
+
+    with open("schedule.json", "w") as f:
+        json.dump(full_schedule, f, indent=4)
+
+    print("✅ schedule.json generated successfully.")
+
+# Make lock helpers globally available
 bot.is_week_locked = is_week_locked
 bot.lock_week = lock_week
 bot.unlock_week = unlock_week
@@ -108,6 +151,9 @@ async def setup_hook():
     except Exception as e:
         print(f"❌ Failed to sync slash commands: {e}")
 
+    auto_generate_schedule()
+
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
     bot.run(TOKEN)
+
