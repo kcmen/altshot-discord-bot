@@ -7,7 +7,6 @@ import json
 
 LOCK_CHANNEL_ID = 1356054216728252506  # #matchup-schedule
 EASTERN = pytz.timezone("US/Eastern")
-GUILD_ID = 1256795396353560697  # Force it to register to your server only
 
 class WeeklyMatchupPoster(commands.Cog):
     def __init__(self, bot):
@@ -21,26 +20,30 @@ class WeeklyMatchupPoster(commands.Cog):
     async def auto_lock(self):
         now = datetime.now(EASTERN)
         if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
-            current_week = self.bot.week_tracker.get_current_week()
-            await self.post_week_logic(current_week)
+            await self.post_week_matchups()
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
-    @app_commands.describe(week="Week number to post matchups for")
-    async def post_week_matchups(self, interaction: discord.Interaction, week: int):
-        await self.post_week_logic(week)
-        await interaction.response.send_message(f"📬 Week {week} matchups posted and week locked manually.", ephemeral=True)
+    async def post_week_matchups(self, interaction: discord.Interaction):
+        await self.post_week_matchups()
+        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
 
-    async def post_week_logic(self, week: int):
-        self.bot.lock_week(week)
+    async def post_week_matchups(self):
+        current_week = self.bot.week_tracker.get_current_week()
+        self.bot.lock_week(current_week)
+
         channel = self.bot.get_channel(LOCK_CHANNEL_ID)
-
         if channel:
             try:
-                with open("teams.json", "r") as tf:
-                    teams = json.load(tf)
+                try:
+                    with open("teams.json", "r") as tf:
+                        teams = json.load(tf)
+                except Exception as e:
+                    print(f"❌ Failed to load teams.json: {e}")
+                    teams = {}
+
                 with open("schedule.json", "r") as sf:
                     schedule = json.load(sf)
-                matchups = schedule.get(str(week), [])
+                matchups = schedule.get(str(current_week), [])
 
                 lines = []
                 for team1, team2 in matchups:
@@ -51,7 +54,7 @@ class WeeklyMatchupPoster(commands.Cog):
                     lines.append(f"{team1} 🆚 {team2}\n👥 {t1_players} vs {t2_players}")
 
                 message = (
-                    f"### 💫 **LIVE NOW: Alt Shot Circuit – Week {week} Matchups** 💫\n\n"
+                    f"### 💫 **LIVE NOW: Alt Shot Circuit – Week {current_week} Matchups** 💫\n\n"
                     f"🎯 **Rally your duo and lock in!**\nIt’s time to swing big, putt smooth, and play like champs.\n\n"
                     + "\n".join(lines) + "\n\n"
                     "📅 **Match Deadline:** Sunday @ 6:59 PM EST\n"
@@ -63,7 +66,7 @@ class WeeklyMatchupPoster(commands.Cog):
                 await channel.send(f"⚠️ Failed to load matchups: {e}")
 
             await channel.send(
-                f"🔒 **Week {week} has been automatically locked!**  \n"
+                f"🔒 **Week {current_week} has been automatically locked!**  \n"
                 f"📅 Deadline has passed — 🛑 No further score submissions or edits are allowed  \n"
                 f"✅ Only admins may approve changes under special circumstances."
             )
@@ -73,9 +76,4 @@ class WeeklyMatchupPoster(commands.Cog):
         await self.bot.wait_until_ready()
 
 async def setup(bot):
-    cog = WeeklyMatchupPoster(bot)
-    await bot.add_cog(cog)
-
-    # Force guild-only registration for immediate visibility*
-    guild = discord.Object(id=GUILD_ID)
-    bot.tree.add_command(cog.post_week_matchups, guild=guild)
+    await bot.add_cog(WeeklyMatchupPoster(bot))
