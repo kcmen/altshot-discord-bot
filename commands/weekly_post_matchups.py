@@ -7,6 +7,7 @@ import json
 
 LOCK_CHANNEL_ID = 1356054216728252506  # #matchup-schedule
 EASTERN = pytz.timezone("US/Eastern")
+GUILD_ID = 1256795396353560697  # Force it to register to your server only
 
 class WeeklyMatchupPoster(commands.Cog):
     def __init__(self, bot):
@@ -31,8 +32,8 @@ class WeeklyMatchupPoster(commands.Cog):
 
     async def post_week_logic(self, week: int):
         self.bot.lock_week(week)
-
         channel = self.bot.get_channel(LOCK_CHANNEL_ID)
+
         if channel:
             try:
                 with open("teams.json", "r") as tf:
@@ -72,4 +73,9 @@ class WeeklyMatchupPoster(commands.Cog):
         await self.bot.wait_until_ready()
 
 async def setup(bot):
-    await bot.add_cog(WeeklyMatchupPoster(bot))
+    cog = WeeklyMatchupPoster(bot)
+    await bot.add_cog(cog)
+
+    # Force guild-only registration for immediate visibility*
+    guild = discord.Object(id=GUILD_ID)
+    bot.tree.add_command(cog.post_week_matchups, guild=guild)
