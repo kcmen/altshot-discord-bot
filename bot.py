@@ -115,12 +115,10 @@ async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
 
-# ✅ TEMP DIAGNOSTIC COMMAND — Now Available to Everyone
-@bot.tree.command(name="force_sync", description="Force re-sync all slash commands")
-async def force_sync(interaction: discord.Interaction):
-    synced = await bot.tree.sync()
-    await interaction.response.send_message(
-        f"🔁 Resynced {len(synced)} commands. Try `/post_week_matchups` again!", ephemeral=True)
+# ✅ TEMPORARY TEST COMMAND — Slash command to check visibility
+@bot.tree.command(name="hello_world", description="Simple test to confirm slash command visibility")
+async def hello_world(interaction: discord.Interaction):
+    await interaction.response.send_message("👋 Hello from the bot! Slash commands are working.", ephemeral=True)
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
