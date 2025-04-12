@@ -62,6 +62,7 @@ bot.is_week_locked = is_week_locked
 bot.lock_week = lock_week
 bot.unlock_week = unlock_week
 
+# ✅ Corrected on_ready with sync logging and guild override
 @bot.event
 async def on_ready():
     ensure_locks_table()
@@ -74,7 +75,7 @@ async def on_ready():
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
 
-        # 🏠 Force guild-only sync (register slash command explicitly)
+        # 🏠 Guild-specific sync
         TEST_GUILD_ID = 1256795396353560697
         guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=guild)
@@ -84,7 +85,6 @@ async def on_ready():
 
     except Exception as e:
         print(f"❌ Failed to sync commands: {e}")
-
 
 # Load all command modules
 initial_extensions = [
@@ -119,11 +119,6 @@ async def load_extensions():
 async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
-
-# ✅ TEMPORARY TEST COMMAND — Slash command to check visibility
-@bot.tree.command(name="hello_world", description="Simple test to confirm slash command visibility")
-async def hello_world(interaction: discord.Interaction):
-    await interaction.response.send_message("👋 Hello from the bot! Slash commands are working.", ephemeral=True)
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
