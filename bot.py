@@ -57,34 +57,10 @@ def unlock_week(week):
     conn.commit()
     conn.close()
 
-# Make lock helpers globally available
+# Make lock helpers globally available*
 bot.is_week_locked = is_week_locked
 bot.lock_week = lock_week
 bot.unlock_week = unlock_week
-
-# ✅ FULL on_ready() with global + guild slash command sync
-@bot.event
-async def on_ready():
-    ensure_locks_table()
-    print(f"✅ Bot is now online as {bot.user}")
-
-    try:
-        # 🌐 Sync global slash commands
-        synced = await bot.tree.sync()
-        print(f"🌐 Synced {len(synced)} global command(s)")
-        for cmd in synced:
-            print(f"   └─ /{cmd.name} — {cmd.description}")
-
-        # 🏠 Sync to your specific test guild
-        TEST_GUILD_ID = 1256795396353560697
-        guild = discord.Object(id=TEST_GUILD_ID)
-        guild_synced = await bot.tree.sync(guild=guild)
-        print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
-        for cmd in guild_synced:
-            print(f"   └─ /{cmd.name} (guild only)")
-
-    except Exception as e:
-        print(f"❌ Failed to sync commands: {e}")
 
 # Load all command modules
 initial_extensions = [
@@ -119,6 +95,18 @@ async def load_extensions():
 async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
+
+    try:
+        synced = await bot.tree.sync()
+        print(f"🌐 Synced {len(synced)} global command(s)")
+
+        TEST_GUILD_ID = 1256795396353560697
+        guild = discord.Object(id=TEST_GUILD_ID)
+        guild_synced = await bot.tree.sync(guild=guild)
+        print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
+
+    except Exception as e:
+        print(f"❌ Failed to sync slash commands: {e}")
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
