@@ -58,13 +58,13 @@ class WeeklyMatchupPoster(commands.Cog):
                     lines.append(f"🔹 {team1} 🆚 {team2}\n👥 {team1_players} vs {team2_players}")
 
                 message = (
-                    f"### 🌟 **LIVE NOW: Alt Shot Circuit – {week_key} Matchups** 🌟\n"
-                    f"🎯 Rally your duo and lock in!\nIt’s time to swing big, putt smooth, and play like champs.\n\n"
-                    + "\n".join(lines) +
-                    "\n\n📅 **Match Deadline:** Sunday @ 6:59 PM EST\n"
-                    "📝 Don't forget to submit your scorecard in <#1341714428592132136>\n"
-                    "🔥 GLHF out there, legends!"
-                )
+    f"### 🌟 **LIVE NOW: Alt Shot Circuit – {week_key} Matchups** 🌟\n"
+    f"🎯 Rally your duo and lock in!\nIt’s time to swing big, putt smooth, and play like champs.\n\n"
+    + "\n".join(lines) +
+    "\n\n📅 **Match Deadline:** Sunday @ 6:59 PM EST\n"
+    "📝 Don't forget to submit your scorecard in <#1356478618703892541>\n"
+    "🔥 GLHF out there, legends!"
+)
                 await channel.send(message)
 
                 if lock_week:
