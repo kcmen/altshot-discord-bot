@@ -20,29 +20,29 @@ class WeeklyMatchupPoster(commands.Cog):
     async def auto_lock(self):
         now = datetime.now(EASTERN)
         if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
-            await self.post_week_matchups()
+            await self.post_week_matchups(lock_week=True)
 
-    @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
+    @app_commands.command(name="post_week_matchups", description="Manually post matchups without locking the week")
     async def post_week_matchups_command(self, interaction: discord.Interaction):
         try:
-            await self.post_week_matchups()
-            await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
+            await self.post_week_matchups(lock_week=False)
+            await interaction.response.send_message("📬 Matchups posted manually (no lock).", ephemeral=True)
         except Exception as e:
             if not interaction.response.is_done():
                 await interaction.response.send_message(f"❌ Failed to post matchups: `{str(e)}`", ephemeral=True)
             else:
                 await interaction.followup.send(f"❌ Failed to post matchups: `{str(e)}`", ephemeral=True)
 
-    async def post_week_matchups(self):
-        # Determine current week by checking how many weeks are in the schedule
+    async def post_week_matchups(self, lock_week=False):
         with open("schedule.json", "r") as sf:
             schedule = json.load(sf)
         current_week = len([w for w in schedule if w.startswith("Week ")])
         week_key = f"Week {current_week if current_week > 0 else 1}"
 
-        self.bot.lock_week(current_week)
-        channel = self.bot.get_channel(LOCK_CHANNEL_ID)
+        if lock_week:
+            self.bot.lock_week(current_week)
 
+        channel = self.bot.get_channel(LOCK_CHANNEL_ID)
         if channel:
             try:
                 with open("teams.json", "r") as tf:
@@ -67,11 +67,12 @@ class WeeklyMatchupPoster(commands.Cog):
                 )
                 await channel.send(message)
 
-                await channel.send(
-                    f"🔒 **{week_key} has been automatically locked!**  \n"
-                    f"📅 Deadline has passed — 🛑 No further score submissions or edits are allowed  \n"
-                    f"✅ Only admins may approve changes under special circumstances."
-                )
+                if lock_week:
+                    await channel.send(
+                        f"🔒 **{week_key} has been automatically locked!**  \n"
+                        f"📅 Deadline has passed — 🛑 No further score submissions or edits are allowed  \n"
+                        f"✅ Only admins may approve changes under special circumstances."
+                    )
 
             except Exception as e:
                 await channel.send(f"⚠️ Failed to load matchups: {e}")
