@@ -62,22 +62,20 @@ bot.is_week_locked = is_week_locked
 bot.lock_week = lock_week
 bot.unlock_week = unlock_week
 
-# ✅ Correct sync logic moved to setup_hook
+# ✅ FULL on_ready() with global + guild slash command sync
 @bot.event
-async def setup_hook():
-    await bot.load_extension("commands.admin_tools")
-    await load_extensions()
-
-    print("🧪 setup_hook() called — syncing slash commands...")
+async def on_ready():
+    ensure_locks_table()
+    print(f"✅ Bot is now online as {bot.user}")
 
     try:
-        # Global sync
+        # 🌐 Sync global slash commands
         synced = await bot.tree.sync()
         print(f"🌐 Synced {len(synced)} global command(s)")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
 
-        # Guild-only sync
+        # 🏠 Sync to your specific test guild
         TEST_GUILD_ID = 1256795396353560697
         guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=guild)
@@ -116,6 +114,11 @@ async def load_extensions():
             print(f"✅ Loaded extension: {ext}")
         except Exception as e:
             print(f"❌ Failed to load extension {ext}: {e}")
+
+@bot.event
+async def setup_hook():
+    await bot.load_extension("commands.admin_tools")
+    await load_extensions()
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
