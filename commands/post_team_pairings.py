@@ -10,11 +10,16 @@ PAIRINGS_FLAG_FILE = "pairings_posted.flag"
 class PostTeamPairings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.bot.loop.create_task(self.delayed_post_team_pairings())  # Run after full bot ready
+
+    async def delayed_post_team_pairings(self):
+        await self.bot.wait_until_ready()
+        if os.path.exists(PAIRINGS_FLAG_FILE):
+            print("🟡 Team pairings already posted (flag detected). Skipping...")
+            return
+        await self.post_team_pairings()
 
     async def post_team_pairings(self):
-        if os.path.exists(PAIRINGS_FLAG_FILE):
-            return
-
         try:
             with open("teams.json", "r") as f:
                 teams = json.load(f)
@@ -42,10 +47,6 @@ class PostTeamPairings(commands.Cog):
             await interaction.response.send_message("📬 Team pairings have been posted.", ephemeral=True)
         except Exception as e:
             await interaction.response.send_message(f"❌ Failed to post team pairings: `{str(e)}`", ephemeral=True)
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.post_team_pairings()  # Post once on first startup
 
 async def setup(bot):
     await bot.add_cog(PostTeamPairings(bot))
