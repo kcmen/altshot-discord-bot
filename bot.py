@@ -62,20 +62,20 @@ bot.is_week_locked = is_week_locked
 bot.lock_week = lock_week
 bot.unlock_week = unlock_week
 
-# ✅ Corrected on_ready with sync logging and guild override
+# ✅ FULL on_ready() with global + guild slash command sync
 @bot.event
 async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
 
     try:
-        # 🌐 Global sync
+        # 🌐 Sync global slash commands
         synced = await bot.tree.sync()
         print(f"🌐 Synced {len(synced)} global command(s)")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
 
-        # 🏠 Guild-specific sync
+        # 🏠 Sync to your specific test guild
         TEST_GUILD_ID = 1256795396353560697
         guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=guild)
