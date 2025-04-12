@@ -11,23 +11,9 @@ EASTERN = pytz.timezone("US/Eastern")
 class WeeklyMatchupPoster(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.auto_lock.start()
-
-    def cog_unload(self):
-        self.auto_lock.cancel()
-
-    @tasks.loop(minutes=1)
-    async def auto_lock(self):
-        now = datetime.now(EASTERN)
-        if now.weekday() == 6 and now.hour == 19 and 59 <= now.minute <= 59:
-            await self._post_matchups_logic()
 
     @app_commands.command(name="post_week_matchups", description="Manually post matchups and lock the week")
     async def post_week_matchups(self, interaction: discord.Interaction):
-        await self._post_matchups_logic()
-        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
-
-    async def _post_matchups_logic(self):
         current_week = self.bot.week_tracker.get_current_week()
         self.bot.lock_week(current_week)
 
@@ -66,9 +52,7 @@ class WeeklyMatchupPoster(commands.Cog):
                 f"✅ Only admins may approve changes under special circumstances."
             )
 
-    @auto_lock.before_loop
-    async def before_auto_lock(self):
-        await self.bot.wait_until_ready()
+        await interaction.response.send_message("📬 Matchups posted and week locked manually.", ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(WeeklyMatchupPoster(bot))
