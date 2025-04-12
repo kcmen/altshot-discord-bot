@@ -1,17 +1,17 @@
-import discord
 import json
-import os
+import discord
 from discord.ext import commands
+from discord import app_commands
 
-TEAM_PAIRINGS_CHANNEL_ID = 1356650434340720690
+PAIRINGS_CHANNEL_ID = 1356650434340720690  # #team-pairings
 
-class TeamPairings(commands.Cog):
+class PostTeamPairings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.has_posted_pairings = False  # Prevent reposting every restart
 
-    async def post_team_pairings(self, guild):
-        if not os.path.exists("teams.json"):
-            print("teams.json not found. Skipping team pairings post.")
+    async def post_team_pairings(self):
+        if self.has_posted_pairings:
             return
 
         try:
@@ -20,27 +20,30 @@ class TeamPairings(commands.Cog):
 
             lines = ["📋 **LCS Alt Shot Team Pairings**\n"]
             for team, data in teams.items():
-                players = data.get("players", [])
-                lines.append(f"{team}: {' / '.join(players)}")
+                players = " / ".join(data.get("players", []))
+                lines.append(f"{team}: {players}")
 
-            content = "\n".join(lines)
-            channel = guild.get_channel(TEAM_PAIRINGS_CHANNEL_ID)
+            message = "\n".join(lines)
+            channel = self.bot.get_channel(PAIRINGS_CHANNEL_ID)
             if channel:
-                await channel.send(content)
+                await channel.send(message)
+                self.has_posted_pairings = True
                 print("✅ Team pairings posted.")
-            else:
-                print("❌ Could not find #team-pairings channel.")
+
         except Exception as e:
             print(f"❌ Failed to post team pairings: {e}")
 
-async def setup(bot):
-    cog = TeamPairings(bot)
-    await bot.add_cog(cog)
+    @app_commands.command(name="post_team_pairings", description="Manually post the team pairings list")
+    async def post_team_pairings_command(self, interaction: discord.Interaction):
+        try:
+            await self.post_team_pairings()
+            await interaction.response.send_message("📬 Team pairings have been posted.", ephemeral=True)
+        except Exception as e:
+            await interaction.response.send_message(f"❌ Failed to post team pairings: `{str(e)}`", ephemeral=True)
 
-    # Trigger post after load if bot is ready
-    if bot.is_ready():
-        await cog.post_team_pairings(bot.get_guild(bot.guilds[0].id))
-    else:
-        @bot.event
-        async def on_ready():
-            await cog.post_team_pairings(bot.get_guild(bot.guilds[0].id))
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.post_team_pairings()  # Post once on first startup
+
+async def setup(bot):
+    await bot.add_cog(PostTeamPairings(bot))
