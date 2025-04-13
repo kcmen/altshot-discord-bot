@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-PAIRINGS_CHANNEL_ID = 1356650434340720690  # #team-pairings
+PAIRINGS_CHANNEL_ID = 1360831176897597550  # #team-pairings (updated)
 MATCHUP_CHANNEL_ID = 1356054216728252506  # #matchup-schedule
 
 class PostTeamPairings(commands.Cog):
