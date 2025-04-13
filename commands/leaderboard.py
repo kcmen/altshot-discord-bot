@@ -1,42 +1,62 @@
 import sqlite3
 import discord
+from discord.ext import commands
 from discord import app_commands
-from utils.format_leaderboard import format_leaderboard
+from utils.week_tracker import get_current_week
 
-LEADERBOARD_CHANNEL_ID = 1356054289650417889  # 👈 Replace with your real channel ID
-current_week = 1
+LEADERBOARD_CHANNEL_ID = 1356054289650417889  # #leaderboard
 
-# Internal function to post leaderboard to the designated channel
-async def post_leaderboard(client: discord.Client):
+async def post_leaderboard(bot):
+    print("📊 post_leaderboard() function triggered.")  # Log when function runs
+
     conn = sqlite3.connect("scores.db")
     cursor = conn.cursor()
+
+    # Get all scores
     cursor.execute("SELECT team, result FROM scores")
-    rows = cursor.fetchall()
+    results = cursor.fetchall()
     conn.close()
 
-    if not rows:
-        return
+    # Track standings and hole differential
+    standings = {}
+    holes = {}
 
-    leaderboard_text = format_leaderboard(rows)
-    leaderboard_text = f"📆 **Leaderboard after Week {current_week}**\n\n" + leaderboard_text
+    for team, result in results:
+        if result == "AS":
+            standings[team] = standings.get(team, 0) + 0.5
+        elif result == "FORFEIT":
+            standings[team] = standings.get(team, 0)
+        else:
+            try:
+                up, _ = map(int, result.split("&"))
+                standings[team] = standings.get(team, 0) + 1
+                holes[team] = holes.get(team, 0) + up
+            except:
+                continue
 
-    guild = client.get_guild(1356460160239010026)  # Replace with your real guild ID
-    leaderboard_channel = guild.get_channel(LEADERBOARD_CHANNEL_ID)
+    sorted_teams = sorted(standings.items(), key=lambda x: (-x[1], -holes.get(x[0], 0)))
 
-    if leaderboard_channel:
-        await leaderboard_channel.send(f"🏆 **Alt Shot Leaderboard Update**\n{leaderboard_text}")
+    lines = ["🏆 **LCS Alt Shot Leaderboard**"]
+    for i, (team, points) in enumerate(sorted_teams, 1):
+        hole_diff = holes.get(team, 0)
+        medal = "🥇" if i == 1 else "🥈" if i == 2 else "🥉" if i == 3 else ""
+        lines.append(f"{medal} {team}: {points} pts | +{hole_diff} holes")
 
-# /leaderboard — posts leaderboard manually (admin only)
-@app_commands.command(name="update_leaderboard", description="Force post the leaderboard (Admin only)")
-@app_commands.checks.has_permissions(administrator=True)
-async def update_leaderboard(interaction: discord.Interaction):
-    await post_leaderboard(interaction.client)
-    await interaction.response.send_message("📬 Leaderboard manually posted.", ephemeral=True)
+    message = "\n".join(lines)
+    channel = bot.get_channel(LEADERBOARD_CHANNEL_ID)
+    if channel:
+        await channel.send(message)
 
-# Register commands
+# Register leaderboard command (optional)
+class Leaderboard(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @app_commands.command(name="update_leaderboard", description="Force post the leaderboard (Admin only)")
+    async def update_leaderboard(self, interaction: discord.Interaction):
+        await post_leaderboard(interaction.client)
+        await interaction.response.send_message("📊 Leaderboard has been updated.", ephemeral=True)
+
 async def setup(bot):
-    bot.tree.add_command(update_leaderboard)
+    await bot.add_cog(Leaderboard(bot))
 
-    # Also expose post_leaderboard for other modules to call
-    import sys
-    sys.modules[__name__].post_leaderboard = post_leaderboard
