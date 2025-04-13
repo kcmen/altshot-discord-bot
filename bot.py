@@ -142,7 +142,8 @@ initial_extensions = [
     "commands.weekly_results_task",
     "commands.post_team_pairings",
     "commands.unlock_week",
-    "commands.view_tracker" # ✅ Added this line
+    "commands.view_tracker", 
+    "commands.post_rules_embed" # ✅ New
 ]
 
 
