@@ -20,6 +20,23 @@ intents.presences = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+# Ensure scores table exists
+def ensure_scores_table():
+    conn = sqlite3.connect("scores.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS scores (
+            team TEXT,
+            opponent TEXT,
+            week INTEGER,
+            result TEXT,
+            holes_won INTEGER,
+            timestamp TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
 # Ensure locks table exists
 def ensure_locks_table():
     conn = sqlite3.connect("scores.db")
@@ -149,7 +166,7 @@ async def setup_hook():
         synced = await bot.tree.sync()
         print(f"🌐 Synced {len(synced)} global command(s)")
 
-        TEST_GUILD_ID = 1256795396353560697  # Replace with your actual server ID
+        TEST_GUILD_ID = 1256795396353560697
         guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=guild)
         print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
@@ -158,6 +175,8 @@ async def setup_hook():
         print(f"❌ Failed to sync slash commands: {e}")
 
     auto_generate_schedule()
+    ensure_scores_table()
+    ensure_locks_table()
 
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
