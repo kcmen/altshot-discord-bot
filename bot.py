@@ -26,6 +26,7 @@ def ensure_scores_table():
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             team TEXT,
             opponent TEXT,
             week INTEGER,
