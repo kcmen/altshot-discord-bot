@@ -11,20 +11,6 @@ class AdminTools(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # 🔓 Unlock a week
-    @app_commands.command(name="unlock_week", description="Unlock a specific week to allow score updates")
-    @app_commands.describe(week="Week number to unlock")
-    async def unlock_week(self, interaction: discord.Interaction, week: int):
-        try:
-            conn = sqlite3.connect("scores.db")
-            cursor = conn.cursor()
-            cursor.execute("UPDATE locks SET locked = 0 WHERE week = ?", (week,))
-            conn.commit()
-            conn.close()
-            await interaction.response.send_message(f"🔓 Week {week} is now unlocked.", ephemeral=True)
-        except Exception as e:
-            await interaction.response.send_message(f"❌ Failed to unlock Week {week}.\nError: `{str(e)}`", ephemeral=True)
-
     # 🔐 Lock a week
     @app_commands.command(name="lock_week", description="Lock a specific week to prevent score changes.")
     @app_commands.describe(week="Week number to lock")
