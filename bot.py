@@ -31,6 +31,7 @@ def ensure_scores_table():
             week INTEGER,
             result TEXT,
             holes_won INTEGER,
+            submitted_by TEXT,
             timestamp TEXT
         )
     """)
