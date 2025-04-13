@@ -1,5 +1,3 @@
-print("\U0001F680 bot.py starting up...")
-
 import os
 import sqlite3
 import json
@@ -135,6 +133,14 @@ async def load_extensions():
             print(f"❌ Failed to load extension {ext}: {e}")
 
 @bot.event
+async def on_ready():
+    print(f"🚀 {bot.user} is now online and ready!")
+
+@bot.event
+async def on_command_error(ctx, error):
+    print(f"❌ An error occurred: {error}")
+
+@bot.event
 async def setup_hook():
     await bot.load_extension("commands.admin_tools")
     await load_extensions()
@@ -143,7 +149,7 @@ async def setup_hook():
         synced = await bot.tree.sync()
         print(f"🌐 Synced {len(synced)} global command(s)")
 
-        TEST_GUILD_ID = 1256795396353560697
+        TEST_GUILD_ID = 1256795396353560697  # Replace with your actual server ID
         guild = discord.Object(id=TEST_GUILD_ID)
         guild_synced = await bot.tree.sync(guild=guild)
         print(f"🏠 Synced {len(guild_synced)} commands to test guild {TEST_GUILD_ID}")
@@ -156,4 +162,3 @@ async def setup_hook():
 # ✅ RUN ONLY IF MAIN SCRIPT
 if __name__ == "__main__":
     bot.run(TOKEN)
-
