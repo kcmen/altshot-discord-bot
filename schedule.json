@@ -1,170 +1,91 @@
 {
     "Week 1": [
-        {
-            "team1": "T5",
-            "team2": "T9"
-        },
-        {
-            "team1": "T1",
-            "team2": "T2"
-        },
-        {
-            "team1": "T4",
-            "team2": "T7"
-        },
-        {
-            "team1": "T3",
-            "team2": "T10"
-        },
-        {
-            "team1": "T6",
-            "team2": "T8"
-        }
+      {"team1": "T1", "team2": "T2"},
+      {"team1": "T3", "team2": "T4"},
+      {"team1": "T5", "team2": "T6"},
+      {"team1": "T7", "team2": "T8"},
+      {"team1": "T9", "team2": "T10"},
+      {"team1": "T11", "team2": "T12"},
+      {"team1": "T13", "team2": "T14"},
+      {"team1": "T15", "team2": "T16"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 2": [
-        {
-            "team1": "T5",
-            "team2": "T8"
-        },
-        {
-            "team1": "T1",
-            "team2": "T4"
-        },
-        {
-            "team1": "T2",
-            "team2": "T10"
-        },
-        {
-            "team1": "T7",
-            "team2": "T9"
-        },
-        {
-            "team1": "T3",
-            "team2": "T6"
-        }
+      {"team1": "T1", "team2": "T3"},
+      {"team1": "T2", "team2": "T4"},
+      {"team1": "T5", "team2": "T7"},
+      {"team1": "T6", "team2": "T8"},
+      {"team1": "T9", "team2": "T11"},
+      {"team1": "T10", "team2": "T12"},
+      {"team1": "T13", "team2": "T15"},
+      {"team1": "T14", "team2": "T16"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 3": [
-        {
-            "team1": "T2",
-            "team2": "T3"
-        },
-        {
-            "team1": "T8",
-            "team2": "T9"
-        },
-        {
-            "team1": "T5",
-            "team2": "T7"
-        },
-        {
-            "team1": "T1",
-            "team2": "T10"
-        },
-        {
-            "team1": "T4",
-            "team2": "T6"
-        }
+      {"team1": "T1", "team2": "T4"},
+      {"team1": "T2", "team2": "T3"},
+      {"team1": "T5", "team2": "T8"},
+      {"team1": "T6", "team2": "T7"},
+      {"team1": "T9", "team2": "T12"},
+      {"team1": "T10", "team2": "T11"},
+      {"team1": "T13", "team2": "T16"},
+      {"team1": "T14", "team2": "T15"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 4": [
-        {
-            "team1": "T2",
-            "team2": "T6"
-        },
-        {
-            "team1": "T3",
-            "team2": "T4"
-        },
-        {
-            "team1": "T1",
-            "team2": "T8"
-        },
-        {
-            "team1": "T9",
-            "team2": "T10"
-        }
+      {"team1": "T1", "team2": "T5"},
+      {"team1": "T2", "team2": "T6"},
+      {"team1": "T3", "team2": "T7"},
+      {"team1": "T4", "team2": "T8"},
+      {"team1": "T9", "team2": "T13"},
+      {"team1": "T10", "team2": "T14"},
+      {"team1": "T11", "team2": "T15"},
+      {"team1": "T12", "team2": "T16"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 5": [
-        {
-            "team1": "T6",
-            "team2": "T9"
-        },
-        {
-            "team1": "T2",
-            "team2": "T5"
-        },
-        {
-            "team1": "T4",
-            "team2": "T8"
-        },
-        {
-            "team1": "T1",
-            "team2": "T3"
-        },
-        {
-            "team1": "T7",
-            "team2": "T10"
-        }
+      {"team1": "T1", "team2": "T6"},
+      {"team1": "T2", "team2": "T5"},
+      {"team1": "T3", "team2": "T8"},
+      {"team1": "T4", "team2": "T7"},
+      {"team1": "T9", "team2": "T14"},
+      {"team1": "T10", "team2": "T13"},
+      {"team1": "T11", "team2": "T16"},
+      {"team1": "T12", "team2": "T15"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 6": [
-        {
-            "team1": "T3",
-            "team2": "T9"
-        },
-        {
-            "team1": "T2",
-            "team2": "T7"
-        },
-        {
-            "team1": "T4",
-            "team2": "T5"
-        },
-        {
-            "team1": "T1",
-            "team2": "T6"
-        },
-        {
-            "team1": "T8",
-            "team2": "T10"
-        }
+      {"team1": "T1", "team2": "T7"},
+      {"team1": "T2", "team2": "T8"},
+      {"team1": "T3", "team2": "T5"},
+      {"team1": "T4", "team2": "T6"},
+      {"team1": "T9", "team2": "T15"},
+      {"team1": "T10", "team2": "T16"},
+      {"team1": "T11", "team2": "T13"},
+      {"team1": "T12", "team2": "T14"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 7": [
-        {
-            "team1": "T2",
-            "team2": "T9"
-        },
-        {
-            "team1": "T5",
-            "team2": "T6"
-        },
-        {
-            "team1": "T1",
-            "team2": "T7"
-        },
-        {
-            "team1": "T4",
-            "team2": "T10"
-        },
-        {
-            "team1": "T3",
-            "team2": "T8"
-        }
+      {"team1": "T1", "team2": "T8"},
+      {"team1": "T2", "team2": "T7"},
+      {"team1": "T3", "team2": "T6"},
+      {"team1": "T4", "team2": "T5"},
+      {"team1": "T9", "team2": "T16"},
+      {"team1": "T10", "team2": "T15"},
+      {"team1": "T11", "team2": "T14"},
+      {"team1": "T12", "team2": "T13"},
+      {"team1": "T17", "team2": "T18"}
     ],
     "Week 8": [
-        {
-            "team1": "T1",
-            "team2": "T5"
-        },
-        {
-            "team1": "T6",
-            "team2": "T7"
-        },
-        {
-            "team1": "T4",
-            "team2": "T9"
-        },
-        {
-            "team1": "T2",
-            "team2": "T8"
-        }
+      {"team1": "T1", "team2": "T9"},
+      {"team1": "T2", "team2": "T10"},
+      {"team1": "T3", "team2": "T11"},
+      {"team1": "T4", "team2": "T12"},
+      {"team1": "T5", "team2": "T13"},
+      {"team1": "T6", "team2": "T14"},
+      {"team1": "T7", "team2": "T15"},
+      {"team1": "T8", "team2": "T16"},
+      {"team1": "T17", "team2": "T18"}
     ]
-}
+  }
+  
