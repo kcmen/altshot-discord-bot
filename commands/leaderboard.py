@@ -3,7 +3,7 @@ import discord
 from discord import app_commands
 from utils.format_leaderboard import format_leaderboard
 
-LEADERBOARD_CHANNEL_ID = 1356480492396089394  # 👈 Replace with your real channel ID
+LEADERBOARD_CHANNEL_ID = 1356054289650417889  # 👈 Replace with your real channel ID
 current_week = 1
 
 # Internal function to post leaderboard to the designated channel
