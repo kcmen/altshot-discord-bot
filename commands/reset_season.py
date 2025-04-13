@@ -7,6 +7,8 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
+LEADERBOARD_CHANNEL_ID = 1356054289650417889  # Set this at the top for easy access
+
 class ResetSeason(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -35,8 +37,15 @@ class ResetSeason(commands.Cog):
             with open("week_tracker.json", "w") as f:
                 json.dump({"current_week": 1}, f)
 
+            # Step 4: Clear leaderboard channel messages
+            channel = self.bot.get_channel(LEADERBOARD_CHANNEL_ID)
+            if channel:
+                async for message in channel.history(limit=100):
+                    if message.author == self.bot.user:
+                        await message.delete()
+
             await interaction.response.send_message(
-                f"🧹 Season has been reset! Backup saved as `scores_backup_{timestamp}.db`.",
+                f"🧹 Season has been reset! Backup saved as `scores_backup_{timestamp}.db`. Leaderboard wiped.",
                 ephemeral=True
             )
 
