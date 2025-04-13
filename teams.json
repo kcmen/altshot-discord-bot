@@ -1,13 +1,20 @@
 {
-  "T1": { "players": ["Alpha", "Bravo"] },
-  "T2": { "players": ["Charlie", "Delta"] },
-  "T3": { "players": ["Echo", "Foxtrot"] },
-  "T4": { "players": ["Golf", "Hotel"] },
-  "T5": { "players": ["India", "Juliet"] },
-  "T6": { "players": ["Kilo", "Lima"] },
-  "T7": { "players": ["Mike", "November"] },
-  "T8": { "players": ["Oscar", "Papa"] },
-  "T9": { "players": ["Quebec", "Romeo"] },
-  "T10": { "players": ["Sierra", "Whiskey"] }
+  "T1": { "players": ["DaddyQuase", "Wheelman"] },
+  "T2": { "players": ["MichiganMaan", "XLazer"] },
+  "T3": { "players": ["Ares2.0", "Orangeman"] },
+  "T4": { "players": ["Drp2309", "Stikky"] },
+  "T5": { "players": ["ItzTownsend", "Bangnhang"] },
+  "T6": { "players": ["Cowboy", "Pierce"] },
+  "T7": { "players": ["Tyrantula", "CoachPengy"] },
+  "T8": { "players": ["Exposed", "TTownBama"] },
+  "T9": { "players": ["Raptor", "Coders"] },
+  "T10": { "players": ["Slawdawg", "Maestro"] },
+  "T11": { "players": ["Weebanger", "Ads316"] },
+  "T12": { "players": ["Oxi", "HunkerDown"] },
+  "T13": { "players": ["WhoIsJay", "Pretty"] },
+  "T14": { "players": ["AntzBundy", "Kalby_9"] },
+  "T15": { "players": ["Smoketree", "lJackson9"] },
+  "T16": { "players": ["Sponge", "Bubbly"] },
+  "T17": { "players": ["Ares Prime", "Daddyjules"] },
+  "T18": { "players": ["Dudechef", "Therealjtobin"] }
 }
- 
