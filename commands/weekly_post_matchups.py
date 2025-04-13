@@ -29,6 +29,8 @@ class WeeklyMatchupPoster(commands.Cog):
     # 🔁 Detect unlocked week + missing flag = post matchups
     @tasks.loop(seconds=15)
     async def week_change_monitor(self):
+        print("🔁 Monitoring for unlocked week...")  # Debug line to confirm loop is running
+
         if not os.path.exists("week_tracker.json") or os.path.exists("pairings_posted.flag"):
             return
 
