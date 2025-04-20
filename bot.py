@@ -2,16 +2,13 @@ print("\U0001F680 bot.py starting up...")
 
 import os
 import sqlite3
+from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
-# Load local .env file only when not on Railway
-if os.getenv("RAILWAY_ENVIRONMENT") is None:
-    from dotenv import load_dotenv
-    load_dotenv()
-
-# Load token (matches Railway variable name)
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+# Load environment variables
+load_dotenv()
+TOKEN = os.getenv("TOKEN")  # ✅ Updated line to match .env key
 GUILD_ID = discord.Object(id=1356460160239010026)  # AHGA Test Server
 
 # Setup intents
@@ -68,6 +65,7 @@ async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
     try:
+        await bot.tree.clear_commands(guild=GUILD_ID)  # 🚨 Force resync by clearing first
         bot.tree.copy_global_to(guild=GUILD_ID)
         synced = await bot.tree.sync(guild=GUILD_ID)
         print(f"🔁 Synced {len(synced)} command(s) to AHGA Test Server")
