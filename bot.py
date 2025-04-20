@@ -8,7 +8,7 @@ from discord.ext import commands
 
 # Load environment variables
 load_dotenv()
-TOKEN = os.getenv("TOKEN")  # ✅ Updated line to match .env key
+TOKEN = os.getenv("DISCORD_BOT_TOKEN")  # ✅ Updated line to match .env key
 GUILD_ID = discord.Object(id=1356460160239010026)  # AHGA Test Server
 
 # Setup intents
