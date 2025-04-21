@@ -69,9 +69,9 @@ async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
     try:
-        await bot.tree.clear_commands(guild=GUILD_ID)     # Clear existing commands
-        await bot.tree.copy_global_to(guild=GUILD_ID)     # ✅ FIXED: Added missing await
-        synced = await bot.tree.sync(guild=GUILD_ID)      # Sync commands to server
+        await bot.tree.clear_commands(guild=GUILD_ID)
+        bot.tree.copy_global_to(guild=GUILD_ID)  # ✅ FIXED: removed the invalid `await`
+        synced = await bot.tree.sync(guild=GUILD_ID)
         print(f"🔁 Synced {len(synced)} command(s) to AHGA Test Server")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
