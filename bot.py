@@ -8,7 +8,7 @@ from discord.ext import commands
 
 # Load environment variables
 load_dotenv()
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")  # ✅ Updated line to match .env key
+TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD_ID = discord.Object(id=1356460160239010026)  # AHGA Test Server
 
 # Setup intents
@@ -44,7 +44,11 @@ def is_week_locked(week):
 def lock_week(week):
     conn = sqlite3.connect("scores.db")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO locks (week, locked) VALUES (?, 1) ON CONFLICT(week) DO UPDATE SET locked = 1", (week,))
+    cursor.execute(
+        "INSERT INTO locks (week, locked) VALUES (?, 1) "
+        "ON CONFLICT(week) DO UPDATE SET locked = 1",
+        (week,)
+    )
     conn.commit()
     conn.close()
 
@@ -65,9 +69,9 @@ async def on_ready():
     ensure_locks_table()
     print(f"✅ Bot is now online as {bot.user}")
     try:
-        await bot.tree.clear_commands(guild=GUILD_ID)  # 🚨 Force resync by clearing first
-        bot.tree.copy_global_to(guild=GUILD_ID)
-        synced = await bot.tree.sync(guild=GUILD_ID)
+        await bot.tree.clear_commands(guild=GUILD_ID)     # Clear existing commands
+        await bot.tree.copy_global_to(guild=GUILD_ID)     # ✅ FIXED: Added missing await
+        synced = await bot.tree.sync(guild=GUILD_ID)      # Sync commands to server
         print(f"🔁 Synced {len(synced)} command(s) to AHGA Test Server")
         for cmd in synced:
             print(f"   └─ /{cmd.name} — {cmd.description}")
@@ -108,6 +112,6 @@ async def load_extensions():
 async def setup_hook():
     await load_extensions()
 
-# ✅ RUN ONLY IF MAIN SCRIPT
+# Run the bot
 if __name__ == "__main__":
     bot.run(TOKEN)
