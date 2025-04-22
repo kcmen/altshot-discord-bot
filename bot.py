@@ -70,11 +70,9 @@ async def on_ready():
     print(f"✅ Bot is now online as {bot.user}")
     try:
         await bot.tree.clear_commands(guild=GUILD_ID)
-        bot.tree.copy_global_to(guild=GUILD_ID)  # ✅ FIXED: removed the invalid `await`
-        synced = await bot.tree.sync(guild=GUILD_ID)
-        print(f"🔁 Synced {len(synced)} command(s) to AHGA Test Server")
-        for cmd in synced:
-            print(f"   └─ /{cmd.name} — {cmd.description}")
+        # Temporarily sync as GLOBAL instead of to the guild
+        synced = await bot.tree.sync()
+        print(f"🌐 Synced {len(synced)} global command(s)")
     except Exception as e:
         print(f"❌ Failed to sync commands: {e}")
 
