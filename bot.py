@@ -2,13 +2,10 @@ print("\U0001F680 bot.py starting up...")
 
 import os
 import sqlite3
-from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
-# Load environment variables
-load_dotenv()
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = discord.Object(id=1356460160239010026)  # AHGA Test Server
 
 # Setup intents
@@ -78,24 +75,24 @@ async def on_ready():
 
 # Load all command modules
 initial_extensions = [
-    "commands.matchup",
-    "commands.scores",
-    "commands.standings",
-    "commands.results_week",
-    "commands.hole_diff",
-    "commands.admin_tools",
-    "commands.reminders",
-    "commands.schedule",
-    "commands.leaderboard",
-    "commands.weekly_matchups",
-    "commands.team_codes",
-    "commands.weekly_reminder_tasks",
-    "commands.post_playoff_bracket",
-    "commands.report_playoff_score",
-    "commands.view_playoff_score",
-    "commands.delete_playoff_score",
-    "commands.reset_playoffs",
-    "commands.advance_manually"
+    # "commands.matchup",
+    # "commands.scores",
+    # "commands.standings",
+    # "commands.results_week",
+    # "commands.hole_diff",
+    # "commands.admin_tools",
+    # "commands.reminders",
+    # "commands.schedule",
+    # "commands.leaderboard",
+    # "commands.weekly_matchups",
+    # "commands.team_codes",
+    # "commands.weekly_reminder_tasks",
+    # "commands.post_playoff_bracket",
+    # "commands.report_playoff_score",
+    # "commands.view_playoff_score",
+    # "commands.delete_playoff_score",
+    # "commands.reset_playoffs",
+    # "commands.advance_manually"
 ]
 
 async def load_extensions():
