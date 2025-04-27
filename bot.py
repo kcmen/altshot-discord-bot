@@ -106,3 +106,7 @@ async def load_extensions():
 @bot.event
 async def setup_hook():
     await load_extensions()
+
+if __name__ == "__main__":
+    bot.run(TOKEN)
+
