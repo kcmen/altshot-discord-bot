@@ -73,26 +73,26 @@ async def on_ready():
     except Exception as e:
         print(f"❌ Failed to sync commands: {e}")
 
-# Load all command modules
+# List all your command modules (extensions)
 initial_extensions = [
-    # "commands.matchup",
-    # "commands.scores",
-    # "commands.standings",
-    # "commands.results_week",
-    # "commands.hole_diff",
-    # "commands.admin_tools",
-    # "commands.reminders",
-    # "commands.schedule",
-    # "commands.leaderboard",
-    # "commands.weekly_matchups",
-    # "commands.team_codes",
-    # "commands.weekly_reminder_tasks",
-    # "commands.post_playoff_bracket",
-    # "commands.report_playoff_score",
-    # "commands.view_playoff_score",
-    # "commands.delete_playoff_score",
-    # "commands.reset_playoffs",
-    # "commands.advance_manually"
+    "commands.matchup",
+    "commands.scores",
+    "commands.standings",
+    "commands.results_week",
+    "commands.hole_diff",
+    "commands.admin_tools",
+    "commands.reminders",
+    "commands.schedule",
+    "commands.leaderboard",
+    "commands.weekly_matchups",
+    "commands.team_codes",
+    "commands.weekly_reminder_tasks",
+    "commands.post_playoff_bracket",
+    "commands.report_playoff_score",
+    "commands.view_playoff_score",
+    "commands.delete_playoff_score",
+    "commands.reset_playoffs",
+    "commands.advance_manually"
 ]
 
 async def load_extensions():
@@ -106,7 +106,3 @@ async def load_extensions():
 @bot.event
 async def setup_hook():
     await load_extensions()
-
-# Run the bot
-if __name__ == "__main__":
-    bot.run(TOKEN)
